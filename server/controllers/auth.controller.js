@@ -54,6 +54,12 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "User already exists" });
     }
 
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
     const user = await User.create({ email, password, name });
 
     const { accessToken, refreshToken } = generateTokens(user._id);
@@ -96,7 +102,7 @@ export const login = async (req, res) => {
         message: "User logged in successfully",
       });
     } else {
-      res.status(401).json({ error: "Invalid email or password" });
+      res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
     res
