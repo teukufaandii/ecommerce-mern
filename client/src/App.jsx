@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar";
 import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
@@ -33,15 +34,21 @@ function App() {
       <div className="relative z-50 pt-20">
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/signup"
             element={!user ? <Signup /> : <Navigate to="/" />}
-          ></Route>
+          />
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="/" />}
-          ></Route>
+          />
+          <Route
+            path="/dashboard"
+            element={
+              user?.role === "admin" ? <Dashboard /> : <Navigate to="/login" />
+            }
+          />
         </Routes>
       </div>
       <Toaster />
