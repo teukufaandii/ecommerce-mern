@@ -5,11 +5,10 @@ import { motion } from "framer-motion";
 import { useUserStore } from "../stores/useUserStore";
 
 const Login = () => {
-  const loading = false;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login } = useUserStore();
+  const { login, loading } = useUserStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
