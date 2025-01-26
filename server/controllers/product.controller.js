@@ -4,8 +4,8 @@ import Product from "../models/product.model.js";
 
 export const getAllProducts = async (req, res) => {
   try {
-    const items = await Product.find();
-    res.json(items);
+    const products = await Product.find();
+    res.json(products);
   } catch (error) {
     res.status(500).json({
       message: "Error occured in getAllProducts",
@@ -71,8 +71,8 @@ export const createProducts = async (req, res) => {
 
 export const deleteProducts = async (req, res) => {
   try {
-    const { id } = req.params.id;
-    const product = await Product.findById(id);
+    const product = await Product.findById(req.params.id);
+
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -80,23 +80,19 @@ export const deleteProducts = async (req, res) => {
     if (product.image) {
       const publicId = product.image.split("/").pop().split(".")[0];
       try {
-        await cloudinary.uploader.destroy(publicId);
+        await cloudinary.uploader.destroy(`products/${publicId}`);
+        console.log("deleted image from cloduinary");
       } catch (error) {
-        console.log("Failed to delete image from cloudinary", error.message);
+        console.log("error deleting image from cloduinary", error);
       }
     }
 
-    await Product.findByIdAndDelete(id);
+    await Product.findByIdAndDelete(req.params.id);
 
-    res(201).json({
-      message: "Product deleted successfully",
-      product,
-    });
+    res.json({ message: "Product deleted successfully" });
   } catch (error) {
-    res.status(500).json({
-      message: "Error occured in deleteProducts",
-      error: error.message,
-    });
+    console.log("Error in deleteProduct controller", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
