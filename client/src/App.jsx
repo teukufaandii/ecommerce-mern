@@ -12,9 +12,21 @@ import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import Dashboard from "./pages/Dashboard";
+import CategoryPage from "./pages/CategoryPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
+
+  const categories = [
+    { href: "/jeans", name: "Jeans", imageUrl: "/jeans.jpg" },
+    { href: "/t-shirts", name: "T-shirts", imageUrl: "/tshirts.jpg" },
+    { href: "/shoes", name: "Shoes", imageUrl: "/shoes.jpg" },
+    { href: "/glasses", name: "Glasses", imageUrl: "/glasses.png" },
+    { href: "/jackets", name: "Jackets", imageUrl: "/jackets.jpg" },
+    { href: "/suits", name: "Suits", imageUrl: "/suits.jpg" },
+    { href: "/bags", name: "Bags", imageUrl: "/bags.jpg" },
+  ];
 
   useEffect(() => {
     checkAuth();
@@ -49,6 +61,8 @@ function App() {
               user?.role === "admin" ? <Dashboard /> : <Navigate to="/login" />
             }
           />
+          <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       <Toaster />

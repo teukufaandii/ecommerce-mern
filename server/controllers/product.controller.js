@@ -126,7 +126,12 @@ export const getProductsByCategory = async (req, res) => {
   const { category } = req.params;
   try {
     const products = await Product.find({ category });
-    res.json(products);
+
+    if (products.length === 0) {
+      return res.status(404).json({ message: "No products found" });
+    }
+
+    res.json({ message: "Products fetched successfully", products });
   } catch (error) {
     res.status(500).json({
       message: "Error occured in getProductsByCategory",
