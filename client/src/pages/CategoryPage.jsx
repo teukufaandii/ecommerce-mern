@@ -10,8 +10,6 @@ const CategoryPage = () => {
 
   const { category } = useParams();
 
-  console.log("category:", category);
-
   const categories = [
     { slug: "jeans" },
     { slug: "t-shirts" },
